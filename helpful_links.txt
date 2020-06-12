@@ -1,0 +1,3 @@
+JS Animations:
+https://css-tricks.com/aos-css-driven-scroll-animation-library/
+https://github.com/michalsnik/aos

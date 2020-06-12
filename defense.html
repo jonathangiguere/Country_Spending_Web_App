@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <title>Military Spending Analysis</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <header>
+        <h2>Military Spending</h2>
+    </header>
+
+    <ul id="menu">
+        <li><a href="index.html">Home</a></li>
+        <li class="selected"><a href="defense.html">Military Spending</a></li>
+        <li><a href="healthcare.html">Healthcare Spending</a></li>
+        <li><a href="education.html">Education Spending</a></li>
+        <li><a href="dashboard.html">Country Dashboard</a></li>
+    </ul>
+
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+
+        function drawAllSheets() {
+            drawSheetName('Military Spending', 'SELECT A,B,C,D,E,F', militarySpendingResponseHandler);
+            drawSheetName('2015', 'SELECT B,P', percentOfGDPMilitaryResponseHandler);
+            drawSheetName('2015', 'SELECT B,F,R,C,H', perCapitaMilitaryResponseHandler);
+            drawSheetName('Military Spending Transposed', 'SELECT A,B,C,D,E,F,G,H,I,J,K', milSpendTimeResponseHandler);
+            drawSheetName('Military Percent Change', 'SELECT A,B', milMapResponseHandler);
+        } //drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1HCjzsVsY39DR7XjCUgdMUGi4rVzERPvB/gviz/tq?sheet='
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response) {
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        }
+
+        function militarySpendingResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 2, desc: true});
+
+            var options = {
+                vAxis: {title: 'Military Spending in Current $'},
+                hAxis: {title: 'Country'},
+                animation: {"startup": true, duration: 1000, easing: 'in',}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById("mil_spend_div"));
+
+
+            chart.draw(data, options);
+        } //militarySpendingResponseHandler
+
+
+        function percentOfGDPMilitaryResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true});
+
+            var options = {
+                legend: 'none',
+                bars: 'horizontal',
+                vAxis: {title: 'Country'},
+                hAxis: {title: '% of GDP Spent on Military'},
+            };
+
+            var view = new google.visualization.DataView(data);
+
+            view.setColumns([0,1, {
+                calc: "stringify",
+                sourceColumn: 1,
+                type: 'string',
+                role: 'annotation'
+            }]);
+
+            var chart = new google.visualization.BarChart(document.getElementById('mil_percent_GDP'));
+
+            chart.draw(view, options);
+        } //percentOfGDPMilitaryResponseHandler
+
+
+        function perCapitaMilitaryResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true});
+
+            var options = {
+                legend: 'none',
+                bubble: {
+                    textStyle: {
+                        auraColor: 'none'
+                    }
+                },
+                vAxis: {title: 'Military Spending Per Capita $'},
+                hAxis: {title: 'GDP Per Capita $'},
+            };
+
+            var chart = new google.visualization.BubbleChart(document.getElementById('mil_percapita_scatter'));
+
+            chart.draw(data, options);
+
+        } //perCapitaMilitaryResponseHandler
+
+
+        function milSpendTimeResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                legend: 'bottom',
+                vAxis: {title: 'Military Spending $'},
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('mil_spend_line'));
+
+            chart.draw(data, options);
+
+        } //milSpendTimeResponseHandler
+
+        function milMapResponseHandler(response) {
+            var data = response.getDataTable();
+
+            var chart = new google.visualization.GeoChart(document.getElementById('mil_map'));
+
+            chart.draw(data, {});
+
+        } //milMapResponseHandler
+
+    </script>
+
+
+</head>
+<body>
+    <div class="content">
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Yearly Spending Comparison - Military</h3>
+            <div id="mil_spend_div" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Percent of GDP Spent on Military - 2015</h3>
+            <div id="mil_percent_GDP" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>GDP Per Capita vs. Military Spending Per Capita - 2015</h3>
+            <div id="mil_percapita_scatter" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Military Spending Change Over Time</h3>
+            <div id="mil_spend_line" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Average Change in Military Spending: 2011 - 2015</h3>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="mil_map" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+    </div>
+
+    <footer>
+          <a href="https://www.linkedin.com/in/jonathan-giguere-msba-78597aa9/" class="fa fa-linkedin"></a>
+        | <a href="https://github.com/jonathangiguere" class="fa fa-github"></a>
+        | <a href="https://www.instagram.com/headspacephoto/" class="fa fa-instagram"></a>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>

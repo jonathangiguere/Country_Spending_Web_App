@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <title>Education Spending Analysis</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <header>
+        <h2>Education Spending</h2>
+    </header>
+
+    <ul id="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="defense.html">Military Spending</a></li>
+        <li><a href="healthcare.html">Healthcare Spending</a></li>
+        <li class="selected"><a href="education.html">Education Spending</a></li>
+        <li><a href="dashboard.html">Country Dashboard</a></li>
+    </ul>
+
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+
+        function drawAllSheets() {
+            drawSheetName('Education Spending', 'SELECT A,B,C,D,E,F', educationSpendingResponseHandler);
+            drawSheetName('2015', 'SELECT B,Q', percentOfGDPEduResponseHandler);
+            drawSheetName('2015', 'SELECT B,F,T,C,H', perCapitaEduResponseHandler);
+            drawSheetName('Education Spending Transposed', 'SELECT *', eduSpendTimeResponseHandler);
+            drawSheetName('Education Percent Change', 'SELECT A,B', eduMapResponseHandler);
+        } //drawAllSheets
+
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1HCjzsVsY39DR7XjCUgdMUGi4rVzERPvB/gviz/tq?sheet='
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+
+        function checkError(response) {
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        }
+
+        function educationSpendingResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 2, desc: true});
+
+            var options = {
+                vAxis: {title: 'Education Spending in Current $'},
+                hAxis: {title: 'Country'},
+                animation: {"startup": true, duration: 1000, easing: 'in',}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById("edu_spend_div"));
+
+
+            chart.draw(data, options);
+        } //educationSpendingResponseHandler
+
+
+        function percentOfGDPEduResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true});
+
+            var options = {
+                legend: 'none',
+                bars: 'horizontal',
+                vAxis: {title: 'Country'},
+                hAxis: {title: '% of GDP Spent on Education'}
+            };
+
+            var view = new google.visualization.DataView(data);
+
+            view.setColumns([0,1, {
+                calc: "stringify",
+                sourceColumn: 1,
+                type: 'string',
+                role: 'annotation'
+            }]);
+
+            var chart = new google.visualization.BarChart(document.getElementById('edu_percent_GDP'));
+
+            chart.draw(view, options);
+        } //percentOfGDPHealthResponseHandler
+
+
+        function perCapitaEduResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true});
+
+            var options = {
+                legend: 'none',
+                bubble: {
+                    textStyle: {
+                        auraColor: 'none'
+                    }
+                },
+                vAxis: {title: 'Education Spending Per Capita $'},
+                hAxis: {title: 'GDP Per Capita $'}
+            };
+
+            var chart = new google.visualization.BubbleChart(document.getElementById('edu_percapita_scatter'));
+
+            chart.draw(data, options);
+
+        } //perCapitaEduResponseHandler
+
+
+        function eduSpendTimeResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+
+            var options = {
+                legend: 'bottom',
+                vAxis: {title: 'Education Spending $'}
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('edu_spend_line'));
+
+            chart.draw(data, options);
+
+        } //eduSpendTimeResponseHandler
+
+
+        function eduMapResponseHandler(response) {
+            var data = response.getDataTable();
+
+            var chart = new google.visualization.GeoChart(document.getElementById('education_map'));
+
+            chart.draw(data, {});
+
+        } //eduMapResponseHandler
+
+    </script>
+
+
+</head>
+<body>
+    <div class="content w3-animate-bottom">
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Yearly Spending Comparison - Education</h3>
+            <div id="edu_spend_div" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Percent of GDP Spent on Education - 2015</h3>
+            <div id="edu_percent_GDP" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>GDP Per Capita vs. Education Spending Per Capita - 2015</h3>
+            <div id="edu_percapita_scatter" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Education Spending Change Over Time</h3>
+            <div id="edu_spend_line" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+
+        <div class="visual" data-aos="fade-in">
+            <h3>Average Change in Education Spending: 2011 - 2015</h3>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="education_map" style="width: 900px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+        </div>
+    </div>
+    <footer>
+          <a href="https://www.linkedin.com/in/jonathan-giguere-msba-78597aa9/" class="fa fa-linkedin"></a>
+        | <a href="https://github.com/jonathangiguere" class="fa fa-github"></a>
+        | <a href="https://www.instagram.com/headspacephoto/" class="fa fa-instagram"></a>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>

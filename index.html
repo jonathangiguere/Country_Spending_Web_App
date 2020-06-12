@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <title>Country Spending Analysis (Home)</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+    <header>
+        <h2>Military, Healthcare, and Education Spending</h2>
+    </header>
+
+    <ul id="menu">
+        <li class="selected"><a href="index.html">Home</a></li>
+        <li><a href="defense.html">Military Spending</a></li>
+        <li><a href="healthcare.html">Healthcare Spending</a></li>
+        <li><a href="education.html">Education Spending</a></li>
+        <li><a href="dashboard.html">Country Dashboard</a></li>
+    </ul>
+
+
+    <script type="text/javascript">
+
+    </script>
+
+
+</head>
+<body>
+
+
+
+    <h1 class="welcome">Welcome</h1>
+
+    <p class="home_text" data-aos="fade-in">
+        Welcome to my analysis of the military, healthcare, and education spending for ten countries from 2011-2015.
+        Analyzed countries include the United States, the United Kingdom, Germany, Japan, Russia, India,
+        Italy, Brazil, Indonesia, and Australia.  You can click on the images below, or the titles in the
+        navigation bar above to view the analysis for each spending category.  To view data by country,
+        click on the "Country Dashboard" tab in the navigation bar.
+    </p>
+    <p class="home_text" data-aos="fade-right">
+        All data comes from the World Bank and can be accessed by clicking the button below:
+    </p>
+    <a class="source" target="_blank" href="https://databank.worldbank.org/source/world-development-indicators">World Bank</a>
+
+
+
+    <div class="grid-container">
+        <div class="grid-item">
+            <a href="defense.html">
+                <img class="responsive" src="images/military.jpg" alt="Military">
+            </a>
+        </div>
+        <div class="grid-item">
+            <a href="healthcare.html">
+                <img class="responsive" src="images/healthcare.jpg" alt="Healthcare">
+            </a>
+        </div>
+        <div class="grid-item">
+            <a href="education.html">
+                <img class="responsive" src="images/education.jpg" alt="Education">
+            </a>
+        </div>
+    </div>
+    <footer>
+          <a href="https://www.linkedin.com/in/jonathan-giguere-msba-78597aa9/" class="fa fa-linkedin"></a>
+        | <a href="https://github.com/jonathangiguere" class="fa fa-github"></a>
+        | <a href="https://www.instagram.com/headspacephoto/" class="fa fa-instagram"></a>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>

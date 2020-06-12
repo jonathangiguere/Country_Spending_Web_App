@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Country Dashboard</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <header>
+        <h2>Country Dashboard</h2>
+    </header>
+
+    <ul id="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="defense.html">Military Spending</a></li>
+        <li><a href="healthcare.html">Healthcare Spending</a></li>
+        <li><a href="education.html">Education Spending</a></li>
+        <li class="selected"><a href="dashboard.html">Country Dashboard</a></li>
+    </ul>
+
+
+    <script type="text/javascript">
+
+        google.charts.load('current', {'packages':['corechart', 'controls']});
+
+        // run initialize() function on page load
+        google.charts.setOnLoadCallback(drawDashboard);
+
+        // Draw dashboard with queried data
+        function drawDashboard() {
+            //var data = response.getDataTable();
+
+            var data = google.visualization.arrayToDataTable([
+                ['Country', 'Avg. Military Spending B$', 'Avg. Healthcare Spending B$', 'Avg. Education Spending B$', '2011', '2012', '2013', '2014', '2015'],
+                ['United States' , 648.4, 2776, 816, 49886.82, 51610.61, 53117.67, 55047.73, 56822.52],
+                ['United Kingdom', 57.73, 258.6, 153.6, 42038.57, 42462.77, 43444.53, 47425.61, 44974.83],
+                ['Germany', 45.29, 400.2, 179, 46644.78, 43858.36, 46285.76, 47959.99, 41139.54],
+                ['Japan', 51.75, 573, 206, 48168, 48603.48, 40454.45, 38109.41, 34524.47],
+                ['Russian Federation', 78.23, 100.44, 76.24, 14351.21, 15434.57, 16007.09, 14100.73, 9313.79],
+                ['India', 49.29, 69.26, 68.12, 1458.1, 1443.88, 1449.61, 1573.88, 1605.61],
+                ['Italy', 28.68, 187.6, 86.03, 38599.06, 35053.53, 35549.97, 35518.42, 30230.23],
+                ['Brazil', 32.21, 190.6, 139.2, 13245.61, 12370.02, 12300.32, 12112.59, 8814],
+                ['Indonesia', 7.06, 26.72, 30.10, 3643.04, 3694.35, 3623.91, 3491.62, 3331.7],
+                ['Australia', 25.49, 130.2, 75.23, 62517.83, 68012.15, 68150.11, 62510.79, 56755.72]
+
+        ]);
+
+            var countryPicker = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'filter_div',
+                'options': {
+                  'filterColumnLabel': 'Country',
+                  'ui': {
+                    'labelStacking': 'vertical',
+                    'allowTyping': false,
+                    'allowMultiple': false,
+                    'label': '',
+                    'caption': 'Pick a Country',
+                    'cssClass': 'selector'
+                    },
+                }
+            });
+
+            var spendingChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'chart_div1',
+                'view': {'columns': [0, 1, 2, 3]}
+            });
+
+            var gdpPerCapitaChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'chart_div2',
+                'view': {'columns': [0, 4, 5, 6, 7, 8]}
+            });
+
+            var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'))
+                .bind(countryPicker, [spendingChart, gdpPerCapitaChart])
+                .draw(data)
+        }
+    </script>
+
+
+</head>
+<body>
+
+
+
+    <h3>Averages for Spending Categories from 2011-2015</h3>
+    <br>
+    <br>
+    <div id="dashboard_div">
+
+        <div id="filter_div">
+
+        </div>
+
+        <div id="chart_div1" style="width: 900px; height: 500px;">
+
+        </div>
+
+        <h3>GDP Per Capita from 2011-2015</h3>
+
+        <div id="chart_div2" style="width: 900px; height: 500px;">
+
+        </div>
+
+    </div>
+    <footer>
+          <a href="https://www.linkedin.com/in/jonathan-giguere-msba-78597aa9/" class="fa fa-linkedin"></a>
+        | <a href="https://github.com/jonathangiguere" class="fa fa-github"></a>
+        | <a href="https://www.instagram.com/headspacephoto/" class="fa fa-instagram"></a>
+    </footer>
+</body>
+</html>
