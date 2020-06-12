@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- styling -->
     <link rel="stylesheet" href="style.css">
+    <!-- for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- for animations -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <title>Healthcare Spending Analysis</title>
+    <!-- for Google Charts -->
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     <header>
         <h2>Healthcare Spending</h2>
     </header>
 
+    <!-- navbar -->
     <ul id="menu">
         <li><a href="index.html">Home</a></li>
         <li><a href="defense.html">Military Spending</a></li>
@@ -21,6 +26,7 @@
         <li><a href="dashboard.html">Country Dashboard</a></li>
     </ul>
 
+    <!-- script for all chart creation -->
     <script>
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawAllSheets);
@@ -49,6 +55,7 @@
             }
         }
 
+        // Grouped bar chart
         function healthSpendingResponseHandler(response) {
             checkError(response);
             var data = response.getDataTable();
@@ -66,6 +73,7 @@
             chart.draw(data, options);
         } //healthSpendingResponseHandler
 
+        // Horizontal bar chart
         function percentOfGDPHealthResponseHandler(response) {
             checkError(response);
             var data = response.getDataTable();
@@ -92,7 +100,7 @@
             chart.draw(view, options);
         } //percentOfGDPHealthResponseHandler
 
-
+        // Bubble Chart
         function perCapitaHealthResponseHandler(response) {
             checkError(response);
             var data = response.getDataTable();
@@ -115,7 +123,7 @@
 
         } //perCapitaHealthResponseHandler
 
-
+        // Line Chart
         function healthSpendTimeResponseHandler(response) {
             checkError(response);
             var data = response.getDataTable();
@@ -131,7 +139,7 @@
 
         } //healthSpendTimeResponseHandler
 
-
+        // Map
         function healthMapResponseHandler(response) {
             var data = response.getDataTable();
 
@@ -146,6 +154,7 @@
 
 </head>
 <body>
+    <!-- divs for visualizations -->
     <div class="content w3-animate-bottom">
 
         <div class="visual" data-aos="fade-in">
@@ -178,12 +187,14 @@
         </div>
 
     </div>
+    <!-- footer -->
     <footer>
           <a href="https://www.linkedin.com/in/jonathan-giguere-msba-78597aa9/" class="fa fa-linkedin"></a>
         | <a href="https://github.com/jonathangiguere" class="fa fa-github"></a>
         | <a href="https://www.instagram.com/headspacephoto/" class="fa fa-instagram"></a>
     </footer>
 
+    <!-- for animation -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         AOS.init();

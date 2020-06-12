@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- styling -->
     <link rel="stylesheet" href="style.css">
+    <!-- for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Country Dashboard</title>
+    <!-- for Google Charts -->
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     <header>
         <h2>Country Dashboard</h2>
     </header>
 
+    <!-- navbar -->
     <ul id="menu">
         <li><a href="index.html">Home</a></li>
         <li><a href="defense.html">Military Spending</a></li>
@@ -20,18 +24,15 @@
         <li class="selected"><a href="dashboard.html">Country Dashboard</a></li>
     </ul>
 
-
+    <!-- script for dashboard creation -->
     <script type="text/javascript">
 
         google.charts.load('current', {'packages':['corechart', 'controls']});
-
-        // run initialize() function on page load
         google.charts.setOnLoadCallback(drawDashboard);
 
-        // Draw dashboard with queried data
         function drawDashboard() {
-            //var data = response.getDataTable();
 
+            // Manually entered data for dashboard here because query was not working
             var data = google.visualization.arrayToDataTable([
                 ['Country', 'Avg. Military Spending B$', 'Avg. Healthcare Spending B$', 'Avg. Education Spending B$', '2011', '2012', '2013', '2014', '2015'],
                 ['United States' , 648.4, 2776, 816, 49886.82, 51610.61, 53117.67, 55047.73, 56822.52],
@@ -47,6 +48,7 @@
 
         ]);
 
+            // Creating dropdown menu to filter both vizzes in dashboard
             var countryPicker = new google.visualization.ControlWrapper({
                 'controlType': 'CategoryFilter',
                 'containerId': 'filter_div',
@@ -63,18 +65,21 @@
                 }
             });
 
+            // First bar chart viz
             var spendingChart = new google.visualization.ChartWrapper({
                 'chartType': 'ColumnChart',
                 'containerId': 'chart_div1',
                 'view': {'columns': [0, 1, 2, 3]}
             });
 
+            // Second bar chart viz
             var gdpPerCapitaChart = new google.visualization.ChartWrapper({
                 'chartType': 'ColumnChart',
                 'containerId': 'chart_div2',
                 'view': {'columns': [0, 4, 5, 6, 7, 8]}
             });
 
+            // Bind control to charts and draw dashboard
             var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'))
                 .bind(countryPicker, [spendingChart, gdpPerCapitaChart])
                 .draw(data)
@@ -85,11 +90,10 @@
 </head>
 <body>
 
-
-
     <h3>Averages for Spending Categories from 2011-2015</h3>
     <br>
     <br>
+    <!-- created dashboard goes here -->
     <div id="dashboard_div">
 
         <div id="filter_div">
@@ -107,6 +111,7 @@
         </div>
 
     </div>
+    <!-- footer -->
     <footer>
           <a href="https://www.linkedin.com/in/jonathan-giguere-msba-78597aa9/" class="fa fa-linkedin"></a>
         | <a href="https://github.com/jonathangiguere" class="fa fa-github"></a>
