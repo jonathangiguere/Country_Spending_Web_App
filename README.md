@@ -11,7 +11,7 @@ I used HTML, CSS, JavaScript, and the Google Charts API for the completion of th
 The data for this analysis came from the World Bank: https://databank.worldbank.org/source/world-development-indicators
 
 ## Using the Files
-There is a seperate HTML file for each page of the web app.  Inspecting the navbar element in any of them
+There is a separate HTML file for each page of the web app.  Inspecting the navbar element in any of them
 will give you an idea of how they are connected.  All styling for the web app is contained in style.css.  The images
 folder contains the images used and the data folder contains the .CSV exports from the World Bank.  After
 downloading the data, I put into a Google Sheet to access it with the Google Charts API.
